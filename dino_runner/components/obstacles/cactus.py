@@ -1,8 +1,12 @@
-from components.obstacles.obstacle import Obstacle
 
+from components.obstacles.obstacle import Obstacle
+import random
 
 class Cactus(Obstacle):
+    
     def __init__(self, image):
-        super().__init__(image)
-        self.image_rect.y = 300
+        self.size = 300
+        self.typee = random.randint(0, 2)
+        super().__init__(image, self.typee)
+        self.image_rect.y = self.size
 

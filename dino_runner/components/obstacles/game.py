@@ -1,13 +1,14 @@
 
 
 
+
 import pygame
+
 from components.dinosaurio import Dinosaur
 from components.nube import Cloud
 from components.corazon import Heart
 from components.obstacles.obstacle_manager import ObstacleManager
-from utils.constants import CLOUD
-from utils.constants import HEART
+from utils.constants import CLOUD, HEART
 from utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS
 
 
@@ -28,6 +29,8 @@ class Game:
         self.y_pos_cloud = 100
         self.x_pos_bg = 0
         self.y_pos_bg = 380
+        self.death_count = 0
+        self.points = 0
 
     def run(self):
         # Game loop: events - update - draw
@@ -46,10 +49,14 @@ class Game:
     def update(self):
         user_input = pygame.key.get_pressed()
         self.dino.update(user_input)
-        self.obstacle_manager.update()
+        self.obstacle_manager.update(self)
+        self.heart.update(self)
+        
         
 
     def draw(self):
+        
+        self.score()
         self.clock.tick(FPS)
         self.screen.fill((255, 255, 255))
         self.draw_background()
@@ -76,4 +83,11 @@ class Game:
         if self.x_pos_cloud <= -image_width:
             self.screen.blit(CLOUD, (image_width + self.x_pos_cloud, self.y_pos_cloud))
             self.x_pos_cloud = 1500
-        self.x_pos_cloud -= self.game_speed       
+        self.x_pos_cloud -= self.game_speed
+
+
+    def score(self):
+        self.points += 1
+        if self.points % 100 == 0:
+            self.game_speed +=1
+        
