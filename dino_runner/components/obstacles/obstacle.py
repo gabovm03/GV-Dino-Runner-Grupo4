@@ -8,7 +8,7 @@ from utils.constants import SCREEN_WIDTH
 class Obstacle(Sprite):
     def __init__(self, image, typee):
         
-        
+        self.vel = 20
         self.image = image
         self.typee = typee
         self.image_rect = self.image[self.typee].get_rect()
@@ -21,7 +21,8 @@ class Obstacle(Sprite):
 
     
     def update(self):
-        self.image_rect.x -= 20
+        self.vel += 0.5
+        self.image_rect.x -=  self.vel
         
     
 

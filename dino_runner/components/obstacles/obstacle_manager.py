@@ -1,7 +1,9 @@
 
 import random
 from components.obstacles.cactus import Cactus
-from utils.constants import LARGE_CACTUS, SMALL_CACTUS
+from components.obstacles.bird import Bird
+
+from utils.constants import LARGE_CACTUS, SMALL_CACTUS, BIRD
 
 
 class ObstacleManager():
@@ -17,11 +19,13 @@ class ObstacleManager():
 
     def update(self, game):
         if len(self.obstacles) == 0:
-            cactus_size = random.randint(1, 2)
-            if cactus_size == 1:
+            cactus_size = random.randint(0, 2)
+            if cactus_size == 0:
                 self.obstacles.append(Cactus(LARGE_CACTUS))
-            elif cactus_size == 2:
+            elif cactus_size == 1:
                 self.obstacles.append(Cactus(SMALL_CACTUS))
+            elif cactus_size == 2:
+                self.obstacles.append(Bird(BIRD))
                 
 
 

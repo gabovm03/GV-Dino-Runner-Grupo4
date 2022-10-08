@@ -3,7 +3,7 @@
 
 
 import pygame
-
+import text_utils
 from components.dinosaurio import Dinosaur
 from components.nube import Cloud
 from components.corazon import Heart
@@ -20,6 +20,7 @@ class Game:
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
         self.clock = pygame.time.Clock()
         self.playing = False
+        self.game_runing = True
         self.dino = Dinosaur()
         self.obstacle_manager = ObstacleManager()
         self.cloud = Cloud()
@@ -56,10 +57,11 @@ class Game:
 
     def draw(self):
         
-        self.score()
+        
         self.clock.tick(FPS)
         self.screen.fill((255, 255, 255))
         self.draw_background()
+        self.score()
         self.dino.draw(self.screen)
         self.heart.draw(self.screen)
         self.obstacle_manager.draw(self.screen)
@@ -90,4 +92,6 @@ class Game:
         self.points += 1
         if self.points % 100 == 0:
             self.game_speed +=1
+        text, text_rect = text_utils.get_score_elements(self.points)
+        self.screen.blit(text, text_rect)
         
