@@ -39,6 +39,7 @@ class ObstacleManager():
                 game.death_count +=1
                 if game.death_count == 5:
                     game.playing = False
+                    game.excute()
 
     def new_method(self):
         self.size +=20

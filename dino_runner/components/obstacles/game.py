@@ -3,6 +3,7 @@
 
 
 import pygame
+from utils.constants import RUNNING
 import text_utils
 from components.dinosaurio import Dinosaur
 from components.nube import Cloud
@@ -34,13 +35,25 @@ class Game:
         self.points = 0
 
     def run(self):
+        sound = pygame.mixer.Sound("run.pp3")
         # Game loop: events - update - draw
         self.playing = True
+        self.reset_attributs()
         while self.playing:
             self.events()
             self.update()
             self.draw()
         pygame.quit()
+
+    def reset_attributs(self):
+        self.death_count = 0
+        self.points = 0
+
+    def excute(self):
+        while self.game_runing:
+            if not self.playing:
+                self.show_menu()
+
 
     def events(self):
         for event in pygame.event.get():
@@ -80,6 +93,7 @@ class Game:
 
 
     def cloud_run(self):
+
         image_width = CLOUD.get_width()
         self.screen.blit(CLOUD, (self.x_pos_cloud, self.y_pos_cloud))
         if self.x_pos_cloud <= -image_width:
@@ -94,4 +108,39 @@ class Game:
             self.game_speed +=1
         text, text_rect = text_utils.get_score_elements(self.points)
         self.screen.blit(text, text_rect)
-        
+
+
+    def show_menu(self):
+        self.screen.fill((255, 255, 255))
+        self.show_menu_options()
+        pygame.display.update()
+        self.handle_events_menu()
+        #pygame.time.delay(1000)
+        #self.playing = True
+        #self.run()
+       
+    
+    def handle_events_menu(self):
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                self.run()
+            
+            if event.type == pygame.QUIT:
+                self.game_runing = False
+                self.playing = False
+                pygame.display.quit()
+                pygame.quit()
+                exit()
+
+    def show_menu_options(self):
+        message = "Welcome to Dino Runner" if self.death_count <= 0 else "GAME OVER" 
+        text, text_rect = text_utils.get_center_message(message, font_size = 30)
+        self.screen.blit(text, text_rect)
+        pos_y = (SCREEN_HEIGHT//2) +30
+        message_instruccion = "Press any key to start the game"
+        text_instruction, text_instruccion_rect = text_utils.get_center_message(message_instruccion, height=pos_y)
+        self.screen.blit(text_instruction, text_instruccion_rect)
+        self.screen.blit(RUNNING[0], ((500), pos_y - 190))
+
+
+    
